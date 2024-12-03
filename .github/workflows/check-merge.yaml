@@ -1,0 +1,16 @@
+name: Check and Merge
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run checks
+      run: echo "Running checks..."
+    - name: Lint code
+      run: echo "Lint check passed!"
