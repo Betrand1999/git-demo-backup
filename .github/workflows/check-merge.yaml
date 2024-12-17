@@ -1,4 +1,4 @@
-name: Check and Merge
+name: Check Merge
 
 on:
   pull_request:
@@ -6,11 +6,14 @@ on:
       - main
 
 jobs:
-  check:
+  validate-dev:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run checks
-      run: echo "Running checks..."
-    - name: Lint code
-      run: echo "Lint check passed!"
+      - uses: actions/checkout@v2
+        with:
+          ref: dev  # Ensure 'dev' branch is checked out
+      - name: Run Checks on Dev
+        run: |
+          echo "Running checks on dev branch..."
+          # Replace with tests, linters, etc.
+          echo "All validations passed for dev!"
