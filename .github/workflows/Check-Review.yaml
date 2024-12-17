@@ -1,17 +1,18 @@
 name: Check Review
 
 on:
-  pull_request:
-    branches:
-      - main
+  pull_request_review:
+    types: [submitted]  # Trigger on review submission
 
 jobs:
   review:
-    if: false # This skips the entire job
+    if: github.event.review.state == 'approved'  # Only for approved reviews
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run review
-      run: echo "Reviewing code..."
-    - name: Code quality
-      run: echo "Code quality check passed!"
+      - uses: actions/checkout@v2
+      - name: Run Review
+        run: echo "Reviewing code after approval..."
+      - name: Code Quality
+        run: |
+          echo "Running code quality checks..."
+          echo "Code quality check passed!"

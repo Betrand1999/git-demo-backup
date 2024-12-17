@@ -1,21 +1,24 @@
-name: Auto Merge
+name: Auto-Merge to Dev
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
 jobs:
-  auto-merge:
-    if: false # This skips the entire job
+  merge-main-to-dev:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Auto-merge if success
-      if: success()
-      uses: pascalgn/automerge-action@v0.14.3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        ######
-
-
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Ensure full history is available
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+      - name: Merge Main into Dev
+        run: |
+          git fetch origin dev
+          git checkout dev
+          git merge origin/main --no-ff -m "Auto-merge: main -> dev"
+          git push origin dev
