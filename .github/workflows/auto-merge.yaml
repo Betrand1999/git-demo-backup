@@ -8,17 +8,28 @@ on:
 jobs:
   merge-main-to-dev:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Grant write permissions
+
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Ensure full history is available
+          fetch-depth: 0  # Ensure full history
+
+      - name: Debug Git State
+        run: |
+          git fetch origin
+          git branch -a
+          git status
+
       - name: Configure Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
       - name: Merge Main into Dev
         run: |
-          git fetch origin dev
+          git fetch origin dev || git checkout -b dev
           git checkout dev
           git merge origin/main --no-ff -m "Auto-merge: main -> dev"
           git push origin dev
